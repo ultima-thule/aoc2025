@@ -1,0 +1,14 @@
+__pycache__
+
+.mypy_cache/
+
+.vscode
+.idea
+
+.venv
+venv
+myenv
+
+.DS_Store
+
+results.txt
