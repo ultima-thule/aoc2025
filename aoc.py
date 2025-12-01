@@ -1,0 +1,38 @@
+import sys
+import time
+
+def read_input(day: int, is_test: bool):
+    suffix = ""
+    if is_test:
+        suffix = "-test"
+
+    with open(f"puzzles/day{day}/data{suffix}.txt", "r+") as dataFile:
+        print(f"****** DAY {day} ******")
+        return dataFile.readlines()
+
+def run_part(day, part, input):
+    print(f"--- Executing part {part} ---")
+
+    fnc_part_one = 'execute_part_one'
+    fnc_part_two = 'execute_part_two'
+    importlib = __import__('importlib')
+    mod = importlib.import_module(f"puzzles.day{day}.program")
+
+    func_one = getattr(mod, fnc_part_one)
+    func_two = getattr(mod, fnc_part_two)
+
+    func_one(input) if part == 1 else func_two(input)
+
+def main(argv):
+    input_data = read_input(argv[0], argv[1])
+    
+    start_time = time.time()
+    run_part(argv[0], 1, input_data)
+    print("--- Solved in %s seconds ---\n" % (time.time() - start_time))
+
+    start_time = time.time()
+    run_part(argv[0], 2, input_data)
+    print("--- Solved in %s seconds ---\n" % (time.time() - start_time))
+
+if __name__ == "__main__":
+    main(sys.argv[1:])
