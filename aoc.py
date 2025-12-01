@@ -1,9 +1,9 @@
 import sys
 import time
 
-def read_input(day: int, is_test: bool):
+def read_input(day, is_test):
     suffix = ""
-    if is_test:
+    if is_test == "True":
         suffix = "-test"
 
     with open(f"puzzles/day{day}/data{suffix}.txt", "r+") as dataFile:
