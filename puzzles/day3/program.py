@@ -4,47 +4,45 @@ def extract_data(input: list[str]):
     for line in input:
             yield [int(x) for x in line.strip()]
 
-
-def get_max_rating(bank):
-    if len(bank) < 2:
+def get_max_rating(bank, length):
+    if len(bank) < length:
         return 0
      
-    if len(bank) == 2:
-        return 10 * bank[0] + bank[1]
+    if len(bank) == length:
+        return int(str(bank))
 
-    idx_i = len(bank) - 2
-    idx_j = len(bank) - 1
+    max_nums = bank[len(bank)-length:]
+    max_idx = [x for x in range(len(bank)-length, len(bank))]
 
-    max_i = bank[idx_i]
-    max_j = bank[idx_j]
+    for i in range (len(bank)-length, -1, -1):
+        if bank[i] >= max_nums[0]:
+            max_nums[0] = bank[i]
+            max_idx[0] = i
 
-    for i in range (len(bank)-2, -1, -1):
-        # print(f"{i}: {bank[i]}, {bank[i+1]} (max: {max_i}, {max_j})")
-        if bank[i] >= max_i:
-            max_i = bank[i]
-            idx_i = i
-        
-    for j in range (len(bank)-1, idx_i, -1):
-        # print(f"{i}: {bank[i]}, {bank[i+1]} (max: {max_i}, {max_j})")
-        if bank[j] >= max_j:
-            max_j = bank[j]
-            idx_j = j
+    for r in range(1, length):
+        for j in range (max_idx[r]-1, max_idx[r-1], -1):
+            if bank[j] >= max_nums[r]:
+                max_nums[r] = bank[j]
+                max_idx[r] = j
 
-    return 10 * max_i + max_j
+    num_list_string = map(str, max_nums)
+    ret = "".join(num_list_string)
+
+    return int(ret)
      
 
 def execute_part_one(input: list[str]) -> None:
     count = 0
 
     for bank in extract_data(input):
-        count += get_max_rating(bank)
+        count += get_max_rating(bank, 2)
 
     print(f"Solved 1: {count}")
 
 def execute_part_two(input: list[str]) -> None:
-        count = 0
+    count = 0
 
-        for line in extract_data(input):
-            continue
+    for bank in extract_data(input):
+        count += get_max_rating(bank, 12)   
 
-        print(f"Solved 2: {count}")
+    print(f"Solved 2: {count}")
