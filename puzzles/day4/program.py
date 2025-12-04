@@ -4,7 +4,6 @@ def extract_data(input: list[str]):
     data = set()
 
     for row, line in enumerate(input):
-        col = 0
         for col, item in enumerate(line):
             if item == "@":
                 data.add((row, col))
