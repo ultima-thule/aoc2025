@@ -16,6 +16,7 @@ def execute_part_one(input: list[str]) -> None:
     count = 0
 
     ranges, data = extract_data(input)
+    ranges.sort(key=lambda x: (x[0], x[1]))
 
     for d in data:
         for r in ranges:
@@ -29,7 +30,6 @@ def execute_part_two(input: list[str]) -> None:
     count = 0
 
     ranges, _ = extract_data(input)
-
     ranges.sort(key=lambda x: (x[0], x[1]))
 
     new_ranges = [ranges.pop(0)]
