@@ -6,11 +6,9 @@ def extract_data(input: list[str]):
 
     for line in input:
         s = line.strip().split("-")
-        # print(s)
         if len(s) == 2:
-            diff = int(s[1]) - int(s[0])
-            ranges.append((int(s[0]), diff))
-        elif len(s) ==1 and s[0] != '':
+            ranges.append((int(s[0]), int(s[1])))
+        elif s[0] != '':
             data.append(int(s[0]))
     return ranges, data
 
@@ -19,14 +17,9 @@ def execute_part_one(input: list[str]) -> None:
 
     ranges, data = extract_data(input)
 
-    # print(ranges)
-    # print(data)
-
-    ranges.sort(key=lambda x: x[0])
-
     for d in data:
         for r in ranges:
-            if d >= r[0] and d <= r[0] + r[1]:
+            if d >= r[0] and d <= r[1]:
                 count += 1
                 break
 
@@ -34,5 +27,25 @@ def execute_part_one(input: list[str]) -> None:
 
 def execute_part_two(input: list[str]) -> None:
     count = 0
+
+    ranges, _ = extract_data(input)
+
+    ranges.sort(key=lambda x: (x[0], x[1]))
+
+    new_ranges = [ranges.pop(0)]
+
+    while len(ranges) > 0:
+        r_prev = new_ranges[-1]
+        r_next = ranges.pop(0)
+
+        # ranges not overlapping
+        if r_prev[1] < r_next[0]:
+            new_ranges.append(r_next)
+        # ranges overlapping
+        else:
+            new_ranges[-1] = (min(r_prev[0], r_next[0]), max(r_prev[1], r_next[1]))
+
+    for r in new_ranges:
+        count += r[1] - r[0] + 1
 
     print(f"Solved 2: {count}") 
